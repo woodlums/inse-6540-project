@@ -1,17 +1,22 @@
 import urequests
 import ujson
 
-class ServiceClient():
 
-    def do_post(self, url, payload):
+class ServiceClient:
+
+    url = "http://172.25.20.2:5000/reading"
+
+    def do_post(self, payload):
 
         headers = {"Content-Type": "application/json"}
         payload = ujson.dumps(payload)
         
-        response = urequests.post(url, headers=headers, data=payload)
+        print(payload)
+        
+        response = urequests.post(self.url, headers=headers, data=payload)
 
-        content = response.headers
-        print(content)
+        resp = response.headers
+        print(resp)
 
         print("Response: (" + str(response.status_code) + "), msg = " + str(response.text))
 

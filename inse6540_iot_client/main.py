@@ -1,45 +1,42 @@
 import time
-from machine import Pin
-from dht11 import DHT11, InvalidChecksum
 import utime
+from machine import Pin
+from dht11 import DHT11
 import wireless_control
-import service_client
-import sys
 import constants
+import bl
+import internal_storage as ist
 
 w = wireless_control.Wireless()
 w.connect()
 
-request_url = "http://172.25.20.2:5000/reading"
-
-sc = service_client.ServiceClient()
-
 pin = Pin(28, Pin.OUT, Pin.PULL_DOWN)
 sensor = DHT11(pin)
 
+ist.create_data_header()
+ist.create_log_header()
+
 while True:
 
-    t = sensor.temperature
-    
-    print("Temperature: {}".format(t))
+    try:
+        # The sensor is slow, give it some time.
+        utime.sleep_ms(500)
         
-    time_iso = "{:04}-{:02}-{:02} {:02}:{:02}:{:02}".format(*time.gmtime())
-    reading = {'reading_value': t,'reading_value_unit':'C','reading_timestamp':time_iso,'reading_type':'T'}
-    
-    sc.do_post(request_url, reading)
-    
-    h = sensor.humidity
-    
-    print("Humidity: {}".format(h))
-    
-    time_iso = "{:04}-{:02}-{:02} {:02}:{:02}:{:02}".format(*time.gmtime())
-    reading = {'reading_value': h,'reading_value_unit':'R','reading_timestamp':time_iso,'reading_type':'H'}
-    
-    sc.do_post(request_url, reading)
-    
-    # with open("readings.dat", 'a') as file1:
-    #    file1.write(f"Temp {sensor.temperature}\n")
-    #    file1.write(f"Humid {sensor.humidity}\n")
+        t = sensor.temperature  # Temp
+        bl.save_value("T", t, "C")
+        
+        # The sensor is slow, give it some time.
+        utime.sleep_ms(500)
+        
+        h = sensor.humidity  # Humid
+        bl.save_value("H", h, "R")
 
+    except Exception as e:
+        
+        print("Exception occurred in main")
+        print(e)
+        ist.write_log_record("Exception in " + __name__)
+        ist.write_log_record(e)
+
+    # Time between reading groups.
     time.sleep(constants.READING_INTERVAL * 60)
-    
