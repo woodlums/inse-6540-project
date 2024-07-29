@@ -4,38 +4,30 @@ import db_connection_parameters
 
 app = Flask(__name__)
 
-
 @app.route("/")
 def hello():
     return "<b>INSE6540 Project</b>"
 
-
 @app.route("/reading", methods=['POST'])
 def create_reading():
-    # reading_value = request.form.get('reading_value')
-    # reading_value_unit = request.form.get('reading_value_unit')
-    # reading_timestamp = request.form.get('reading_timestamp')
-    # reading_type = request.form.get('reading_type')
-
-    global connection
     incoming = request.json
     reading_value = incoming.get('reading_value')
     reading_value_unit = incoming.get('reading_value_unit')
     reading_timestamp = incoming.get('reading_timestamp')
     reading_type = incoming.get('reading_type')
+    hashed_value = incoming.get('hashed_value')
 
     try:
         connection = mysql.connector.connect(host=db_connection_parameters.HOST,
-                                             database=db_connection_parameters.DATABASE,
-                                             user=db_connection_parameters.USER,
-                                             password=db_connection_parameters.PASSWORD)
+                                                 database=db_connection_parameters.DATABASE,
+                                                 user=db_connection_parameters.USER,
+                                                 password=db_connection_parameters.PASSWORD)
 
         mysql_insert_query = (f"INSERT INTO readings "
-                              f"(date_time, value, unit, reading_type) "
-                              f"values "
-                              f"('{reading_timestamp}', '{reading_value}', "
-                              f"'{reading_value_unit}', '{reading_type}');")
-        print(mysql_insert_query)
+                                  f"(date_time, value, unit, reading_type, hashed_value) "
+                                  f"values "
+                                  f"('{reading_timestamp}', '{reading_value}', "
+                                  f"'{reading_value_unit}', '{reading_type}', '{hashed_value}');")
 
         cursor = connection.cursor()
         cursor.execute(mysql_insert_query)
