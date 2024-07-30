@@ -1,12 +1,18 @@
 from flask import Flask, json, request, jsonify
 import mysql.connector
+
+import db
 import db_connection_parameters
 
+database = db.DB()
+
 app = Flask(__name__)
+
 
 @app.route("/")
 def hello():
     return "<b>INSE6540 Project</b>"
+
 
 @app.route("/reading", methods=['POST'])
 def create_reading():
@@ -19,22 +25,15 @@ def create_reading():
 
     try:
         connection = mysql.connector.connect(host=db_connection_parameters.HOST,
-                                                 database=db_connection_parameters.DATABASE,
-                                                 user=db_connection_parameters.USER,
-                                                 password=db_connection_parameters.PASSWORD)
+                                             database=db_connection_parameters.DATABASE,
+                                             user=db_connection_parameters.USER,
+                                             password=db_connection_parameters.PASSWORD)
 
-        mysql_insert_query = (f"INSERT INTO readings "
-                                  f"(date_time, value, unit, reading_type, hashed_value) "
-                                  f"values "
-                                  f"('{reading_timestamp}', '{reading_value}', "
-                                  f"'{reading_value_unit}', '{reading_type}', '{hashed_value}');")
-
-        cursor = connection.cursor()
-        cursor.execute(mysql_insert_query)
-        connection.commit()
+        database.save_reading(reading_value, reading_value_unit, reading_timestamp,
+                              reading_type, hashed_value)
 
     except mysql.connector.Error as error:
-        print("Failed to insert record {}".format(error))
+
         return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
 
     finally:
@@ -49,21 +48,8 @@ def create_reading():
 
 @app.route("/reading", methods=['GET'])
 def testdb():
-    connection = mysql.connector.connect(host='172.25.20.3',
-                                         database='inse6540',
-                                         user='chicken',
-                                         password='bokbokbok')
-
-    mysql_insert_query = (f"select * from readings;")
-
-    cursor = connection.cursor()
-    cursor.execute(mysql_insert_query)
-
-    results = cursor.fetchall()
-    print(results)
-
-    cursor.close()
-
+    limit = request.args.get('limit', None)
+    results = database.get_records(limit)
     return jsonify(results)
 
 
