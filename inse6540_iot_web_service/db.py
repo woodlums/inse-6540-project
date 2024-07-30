@@ -12,14 +12,15 @@ class DB:
 
         self.cursor = self.connection.cursor()
 
-    def get_records(self, limit):
-        if limit == None:
-            mysql_insert_query = f"select * from readings;"
-        else:
-            mysql_insert_query = f"select * from readings limit {limit};"
+    def get_records(self, start_date, end_date):
 
-        self.cursor.execute(mysql_insert_query)
-        records = self.cursor.fetchall()
+        mysql_query = f"select * from readings_display where timestamp between '{start_date}' and '{end_date}';"
+
+        self.cursor.execute(mysql_query)
+
+        columns = self.cursor.description
+        records = [{columns[index][0].replace(' ', '_'): column for index, column in enumerate(value)} for value in self.cursor.fetchall()]
+
         return records
 
     def save_reading(self, reading_value, reading_value_unit, reading_timestamp,

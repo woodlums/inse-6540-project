@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+<h3> Filter </h3>
+<form action="" method='POST' name="myform">
+    <div class="row">
+
+        <div class="col-sm-4">
+              {{ form.startdate.label }} {{form.startdate(class='datepicker form-control',
+              type='datetime-local')}}{{form.hidden_tag()}}
+        </div>
+        <div class="col-sm-4">
+              {{ form.enddate.label }} {{form.enddate(class='datepicker form-control',
+              type='datetime-local')}}{{form.hidden_tag()}}
+        </div>
+        <div class="col-sm-4">
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1" />
+            </div>
+        </div>
+    </div>
+    {{form.submit(class="btn btn-primary")}}
+</form>
+
+<table id="data" class="table table-hover table-bordered">
+    <thead class="table-dark">
+    <tr>
+        {% for column in display_columns %}
+        <th scope="col">{{ column.replace('_', ' ') }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for reading in readings %}
+    <tr>
+        <td>{{ reading.Timestamp }}</td>
+        <td>{{ reading.Value }}</td>
+        <td>{{ reading.Unit }}</td>
+        <td>{{ reading.Type }}</td>
+        <td>
+            <small>
+                <span style="font-family: Courier, monospace">Hash: {{ reading.Unique_Hash[0:64] }}</span>
+                <br>
+                <span style="font-family: Courier, monospace">Salt: {{ reading.Unique_Hash[65:] }}</span>
+            </small>
+        </td>
+        <td style="text-align: center">{{ reading.In_Blockchain }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
