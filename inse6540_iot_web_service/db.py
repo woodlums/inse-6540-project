@@ -14,7 +14,7 @@ class DB:
 
     def get_records(self, start_date, end_date):
 
-        mysql_query = f"select * from readings_display where CAST(timestamp as DATE) between '{start_date}' and '{end_date} order by timestamp desc';"
+        mysql_query = f"select * from readings_display where CAST(timestamp as DATE) between '{start_date}' and '{end_date}' order by Timestamp desc;"
 
         self.cursor.execute(mysql_query)
 

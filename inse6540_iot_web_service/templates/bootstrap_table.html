@@ -7,21 +7,18 @@
 
 <form action="" method='POST' name="myform">
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-6">
               {{ form.startdate.label }} {{form.startdate(class='datepicker form-control')}}
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-6">
               {{ form.enddate.label }} {{form.enddate(class='datepicker form-control')}}
-        </div>
-        <div class="col-lg-4">
-              A default
         </div>
     </div>
     <br>
     {{form.submit(class="btn btn-primary")}}
 </form>
 <br/>
-Records found:  {{ total_readings }}
+Records found:  {{ total_readings }}, <i>Latest values are on top.</i>
 <table id="data" class="table table-hover table-bordered">
     <thead class="table-dark">
     <tr>

@@ -68,7 +68,7 @@ def index():
     form = InfoForm()
 
     if 'startdate' not in request.form and 'enddate' not in request.form:
-         form.startdate.data = datetime.now() - timedelta(days=10)
+         form.startdate.data = datetime.now()
          form.enddate.data = datetime.now()
     else:
         form.startdate.data = datetime.strptime(request.form['startdate'], '%Y-%m-%d')
