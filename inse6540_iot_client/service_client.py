@@ -1,8 +1,7 @@
 import urequests
 import ujson
 
-
-class ServiceClient:
+class ServiceClient():
 
     url = "http://172.25.20.2:5000/reading"
 

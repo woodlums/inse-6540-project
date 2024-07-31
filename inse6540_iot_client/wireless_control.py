@@ -7,6 +7,8 @@ class Wireless:
     
     wlan = None
     
+    ip = "0.0.0.0"
+    
     def connect(self):
         
         self.wlan = network.WLAN(network.STA_IF)
@@ -31,3 +33,4 @@ class Wireless:
           print('Connected')
           status = self.wlan.ifconfig()
           print( 'ip = ' + status[0] )
+          self.ip = status[0]

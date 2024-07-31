@@ -1,6 +1,5 @@
 import os
-import utilities
-
+import time
 
 def write_csv(timestamp, value, unit, reading_type, hashed_value):
     
@@ -9,24 +8,21 @@ def write_csv(timestamp, value, unit, reading_type, hashed_value):
     with open("readings.dat", 'a') as file1:
         file1.write(csv_record)
 
-
 def write_exception_record(msg):
-
-    time_iso = utilities.get_iso_time()
+    
+    time_iso = "{:04}-{:02}-{:02} {:02}:{:02}:{:02}".format(*time.gmtime())
     record = f"\"{time_iso}\",{msg},\"\n"
 
     with open("log.dat", 'a') as file1:
         file1.write(record)
 
-
 def write_log_record(msg):
     
-    time_iso = utilities.get_iso_time()
+    time_iso = "{:04}-{:02}-{:02} {:02}:{:02}:{:02}".format(*time.gmtime())
     record = f"\"{time_iso}\",\"{msg}\"\n"
 
     with open("log.dat", 'a') as file1:
         file1.write(record)
-
 
 def create_data_header():
   
@@ -35,7 +31,6 @@ def create_data_header():
         if content_size == 0:
             file1.write(f"\"timestamp\",\"value\",\"unit\",\"reading_type\",\"hashed_value\"\n")
             print("Created readings CSV Header")
-
 
 def create_log_header():
     
