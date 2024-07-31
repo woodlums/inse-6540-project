@@ -1230,7 +1230,7 @@ inse6540|schema||remote||UPDATE|G</Grants>
       <CollationName>utf8_general_ci</CollationName>
     </schema>
     <schema id="325" parent="1" name="inse6540">
-      <LastIntrospectionLocalTimestamp>2024-07-29.22:34:24</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-07-30.17:07:20</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_general_ci</CollationName>
     </schema>
     <schema id="326" parent="1" name="mysql">
@@ -1278,167 +1278,199 @@ inse6540|schema||remote||UPDATE|G</Grants>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_general_ci</CollationName>
     </table>
-    <column id="340" parent="335" name="id">
+    <view id="340" parent="325" name="readings_display">
+      <Definer>remote@%</Definer>
+      <SourceTextLength>540</SourceTextLength>
+    </view>
+    <column id="341" parent="335" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="341" parent="335" name="date">
+    <column id="342" parent="335" name="date">
       <DasType>datetime|0s</DasType>
       <DefaultExpression>current_timestamp()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="342" parent="335" name="log_text">
+    <column id="343" parent="335" name="log_text">
       <DasType>varchar(45)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="343" parent="335" name="severity">
+    <column id="344" parent="335" name="severity">
       <DasType>int(11)|0s</DasType>
       <Position>4</Position>
     </column>
-    <foreign-key id="344" parent="335" name="fk_severity">
+    <foreign-key id="345" parent="335" name="fk_severity">
       <ColNames>severity</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>severity</RefTableName>
     </foreign-key>
-    <index id="345" parent="335" name="PRIMARY">
+    <index id="346" parent="335" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="346" parent="335" name="fk_severity_idx">
+    <index id="347" parent="335" name="fk_severity_idx">
       <ColNames>severity</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="347" parent="335" name="PRIMARY">
+    <key id="348" parent="335" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="348" parent="336" name="type_code">
+    <column id="349" parent="336" name="type_code">
       <DasType>char(2)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="349" parent="336" name="type_name">
+    <column id="350" parent="336" name="type_name">
       <DasType>varchar(45)|0s</DasType>
       <Position>2</Position>
     </column>
-    <index id="350" parent="336" name="PRIMARY">
+    <index id="351" parent="336" name="PRIMARY">
       <ColNames>type_code</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="351" parent="336" name="PRIMARY">
+    <key id="352" parent="336" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="352" parent="337" name="id">
-      <AutoIncrement>111</AutoIncrement>
+    <column id="353" parent="337" name="id">
+      <AutoIncrement>113</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="353" parent="337" name="date_time">
+    <column id="354" parent="337" name="date_time">
       <DasType>datetime|0s</DasType>
       <DefaultExpression>current_timestamp()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="354" parent="337" name="value">
+    <column id="355" parent="337" name="value">
       <DasType>float|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="355" parent="337" name="unit">
+    <column id="356" parent="337" name="unit">
       <DasType>char(1)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="356" parent="337" name="reading_type">
+    <column id="357" parent="337" name="reading_type">
       <DasType>char(2)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="357" parent="337" name="hashed_value">
+    <column id="358" parent="337" name="hashed_value">
       <DasType>char(97)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="358" parent="337" name="bc_written">
+    <column id="359" parent="337" name="bc_written">
       <DasType>tinyint(4)|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <foreign-key id="359" parent="337" name="fk_unit">
+    <foreign-key id="360" parent="337" name="fk_unit">
       <ColNames>unit</ColNames>
       <RefColNames>unit_code</RefColNames>
       <RefTableName>units</RefTableName>
     </foreign-key>
-    <foreign-key id="360" parent="337" name="fk_type_code">
+    <foreign-key id="361" parent="337" name="fk_type_code">
       <ColNames>reading_type</ColNames>
       <RefColNames>type_code</RefColNames>
       <RefTableName>reading_type</RefTableName>
     </foreign-key>
-    <index id="361" parent="337" name="PRIMARY">
+    <index id="362" parent="337" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="362" parent="337" name="fk_unit_idx">
+    <index id="363" parent="337" name="fk_unit_idx">
       <ColNames>unit</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="363" parent="337" name="fk_reading_type_idx">
+    <index id="364" parent="337" name="fk_reading_type_idx">
       <ColNames>reading_type</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="364" parent="337" name="PRIMARY">
+    <key id="365" parent="337" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="365" parent="338" name="id">
+    <column id="366" parent="338" name="id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="366" parent="338" name="explanation">
+    <column id="367" parent="338" name="explanation">
       <DasType>varchar(45)|0s</DasType>
       <Position>2</Position>
     </column>
-    <index id="367" parent="338" name="PRIMARY">
+    <index id="368" parent="338" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="368" parent="338" name="PRIMARY">
+    <key id="369" parent="338" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="369" parent="339" name="unit_code">
+    <column id="370" parent="339" name="unit_code">
       <DasType>char(1)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="370" parent="339" name="unit_name">
+    <column id="371" parent="339" name="unit_name">
       <DasType>varchar(45)|0s</DasType>
       <Position>2</Position>
     </column>
-    <index id="371" parent="339" name="PRIMARY">
+    <index id="372" parent="339" name="PRIMARY">
       <ColNames>unit_code</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="372" parent="339" name="PRIMARY">
+    <key id="373" parent="339" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
+    <column id="374" parent="340" name="Timestamp">
+      <DasType>datetime|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="375" parent="340" name="Value">
+      <DasType>float|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="376" parent="340" name="Unit">
+      <DasType>varchar(45)|0s</DasType>
+      <Position>3</Position>
+    </column>
+    <column id="377" parent="340" name="Type">
+      <DasType>varchar(45)|0s</DasType>
+      <Position>4</Position>
+    </column>
+    <column id="378" parent="340" name="Unique Hash">
+      <DasType>char(97)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="379" parent="340" name="In Blockchain">
+      <DasType>varchar(1)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+    </column>
   </database-model>
 </dataSource>

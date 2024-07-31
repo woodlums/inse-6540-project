@@ -14,7 +14,29 @@ class DB:
 
     def get_records(self, start_date, end_date):
 
-        mysql_query = f"select * from readings_display where timestamp between '{start_date}' and '{end_date}';"
+        mysql_query = f"select * from readings_display where CAST(timestamp as DATE) between '{start_date}' and '{end_date} order by timestamp desc';"
+
+        self.cursor.execute(mysql_query)
+
+        columns = self.cursor.description
+        records = [{columns[index][0].replace(' ', '_'): column for index, column in enumerate(value)} for value in self.cursor.fetchall()]
+
+        return records
+
+    def get_column_names(self, table_name):
+        mysql_query = f"select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '{table_name}';"
+
+        self.cursor.execute(mysql_query)
+
+        columns = self.cursor.description
+        records = [{columns[index][0].replace(' ', '_'): column for index, column in enumerate(value)} for value in
+                   self.cursor.fetchall()]
+
+        return [list(x.values())[0] for x in records]
+
+    def get_all_records(self):
+
+        mysql_query = f"select * from readings_display order by timestamp desc;"
 
         self.cursor.execute(mysql_query)
 

@@ -5,33 +5,28 @@
 
 {% block content %}
 
-<h3> Filter </h3>
 <form action="" method='POST' name="myform">
     <div class="row">
-
-        <div class="col-sm-4">
-              {{ form.startdate.label }} {{form.startdate(class='datepicker form-control',
-              type='datetime-local')}}{{form.hidden_tag()}}
+        <div class="col-lg-4">
+              {{ form.startdate.label }} {{form.startdate(class='datepicker form-control')}}
         </div>
-        <div class="col-sm-4">
-              {{ form.enddate.label }} {{form.enddate(class='datepicker form-control',
-              type='datetime-local')}}{{form.hidden_tag()}}
+        <div class="col-lg-4">
+              {{ form.enddate.label }} {{form.enddate(class='datepicker form-control')}}
         </div>
-        <div class="col-sm-4">
-            <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-            <label class="form-check-label" for="defaultCheck1" />
-            </div>
+        <div class="col-lg-4">
+              A default
         </div>
     </div>
+    <br>
     {{form.submit(class="btn btn-primary")}}
 </form>
-
+<br/>
+Records found:  {{ total_readings }}
 <table id="data" class="table table-hover table-bordered">
     <thead class="table-dark">
     <tr>
-        {% for column in display_columns %}
-        <th scope="col">{{ column.replace('_', ' ') }}</th>
+        {% for value in display_columns %}
+        <th scope="col">{{ value }}</th>
         {% endfor %}
     </tr>
     </thead>

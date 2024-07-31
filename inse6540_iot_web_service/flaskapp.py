@@ -1,8 +1,9 @@
 from datetime import timedelta, datetime
 
+import wtforms
 from flask import Flask, json, request, jsonify, render_template, session, redirect
 from flask_wtf import FlaskForm
-from wtforms.fields.datetime import DateField
+from wtforms.fields.datetime import DateField, DateTimeField, TimeField
 from wtforms.validators import DataRequired
 from wtforms import validators, SubmitField
 import mysql.connector
@@ -11,7 +12,7 @@ import db_connection_parameters
 
 database = db.DB()
 
-class InfoForm(FlaskForm):
+class InfoForm(wtforms.Form):
     startdate = DateField('Start Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
     enddate = DateField('End Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
     submit = SubmitField('Submit')
@@ -21,7 +22,7 @@ app.config['SECRET_KEY'] = '#$%^&*'
 
 @app.route("/")
 def hello():
-    return "<b>INSE6540 Project</b>"
+    return render_template("start.html")
 
 
 @app.route("/reading", methods=['POST'])
@@ -57,9 +58,8 @@ def create_reading():
 
 
 @app.route("/reading", methods=['GET'])
-def testdb():
-    limit = request.args.get('limit', None)
-    results = database.get_records(limit)
+def get_readings():
+    results = database.get_records()
     return jsonify(results)
 
 
@@ -67,32 +67,25 @@ def testdb():
 def index():
     form = InfoForm()
 
-    if 'startdate' not in session and 'enddate' not in session:
-         form.startdate.data = datetime.now() - timedelta(days=1)
+    if 'startdate' not in request.form and 'enddate' not in request.form:
+         form.startdate.data = datetime.now() - timedelta(days=10)
          form.enddate.data = datetime.now()
+    else:
+        form.startdate.data = datetime.strptime(request.form['startdate'], '%Y-%m-%d')
+        form.enddate.data = datetime.strptime(request.form['enddate'], '%Y-%m-%d')
 
+    readings = database.get_records(datetime(form.startdate.data.year, form.startdate.data.month, form.startdate.data.day,0,0,0),
+                                    datetime(form.enddate.data.year, form.enddate.data.month, form.enddate.data.day,12,59,59))
 
-    readings = database.get_records(form.startdate.data, form.enddate.data)
+    display_columns = database.get_column_names("readings_display")
 
-    display_columns = [x for x in readings[0].keys()]
-
-
-    if form.validate_on_submit():
-        session['startdate'] = form.startdate.data
-        session['enddate'] = form.enddate.data
-        #return redirect('date')
-
-    return render_template('bootstrap_table.html', title='Blockchain Enabled IOT Readings',
+    return render_template("bootstrap_table.html",
+                           title='Readings Management',
+                           subtitle='INSE6540 Implementation Project',
                            readings=readings,
                            display_columns=display_columns,
-                           form=form)
-
-
-@app.route('/dashboards/date', methods=['GET','POST'])
-def date():
-    startdate = session['startdate']
-    enddate = session['enddate']
-    return render_template('date.html')
+                           form=form,
+                           total_readings=len(readings))
 
 
 if __name__ == "__main__":
