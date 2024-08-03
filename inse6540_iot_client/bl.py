@@ -15,7 +15,9 @@ def save_value(rtype, value, unit):
     # Build the hashed value including salt.
     salt = os.urandom(16)
     text = f"{time_iso}{rtype}{value}{unit}".encode("utf-8")
-    hashed_value =  hashlib.sha256(salt + text).digest().hex() + ':' + salt.hex()
+    
+    #hashed_value = hashlib.sha256(text).digest().hex()
+    hashed_value =  hashlib.sha256(salt.hex() + text.hex()).digest().hex() + ':' + salt.hex()
 
     try:
         # Save to internal storage
