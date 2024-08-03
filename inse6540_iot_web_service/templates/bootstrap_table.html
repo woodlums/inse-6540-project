@@ -41,7 +41,7 @@ Records found:  {{ total_readings }}, <i>Latest values are on top.</i>
                 <span style="font-family: Courier, monospace">Salt: {{ reading.Unique_Hash[65:] }}</span>
             </small>
         </td>
-        <td style="text-align: center">{{ reading.In_Blockchain }}</td>
+        <td style="text-align: center">{{ reading.Processed }}</td>
     </tr>
     {% endfor %}
     </tbody>
