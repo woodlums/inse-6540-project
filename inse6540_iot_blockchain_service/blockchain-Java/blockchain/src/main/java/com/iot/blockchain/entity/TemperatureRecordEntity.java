@@ -24,6 +24,7 @@ public class TemperatureRecordEntity {
     private String reading_type;
     private String hashed_value;
     private Boolean processed = false;
+    private String blockchain_transaction;
 		
     public Long getId() {
 		return id;
@@ -67,5 +68,10 @@ public class TemperatureRecordEntity {
 	public void setProcessed(Boolean processed) {
 		this.processed = processed;
 	}
+	public String getBlockchain_transaction() {
+		return this.blockchain_transaction;
+	}
+	public void setBlockchain_transaction(String blockchain_transaction) {
+		this.blockchain_transaction = blockchain_transaction;
+	}
 }
-	

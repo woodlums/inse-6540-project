@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class ReadandHashService {
@@ -43,15 +44,16 @@ public class ReadandHashService {
 			System.out.printf("INFO: Based on salt %s new hash is %s \n", salt, hash);
 			
 			// Call Ethereum contract with hash
-			//ethereumService.postHashedData(hash);
-
-			// Mark the record as processed
+			CompletableFuture<String> h = ethereumService.postHashedData(hash);
+			
+			
+			// Mark the record as processed and include the new transaction id.
 			reading.setProcessed(true);
+			reading.setBlockchain_transaction(h.get());
 			temperatureRecordRepo.save(reading);
 			System.out.println("INFO: The record was saved to the Blockchain and marked as processed.");
 		}
 	}
-
 	
 	private String convertToHex(String input)
 	{
