@@ -19,12 +19,15 @@
 </form>
 <br/>
 Records found:  {{ total_readings }}, <i>Latest values are on top.</i>
-<table id="data" class="table table-hover table-bordered">
+<table id="data" class="table table-responsive table-hover table-bordered">
     <thead class="table-dark">
     <tr>
-        {% for value in display_columns %}
-        <th scope="col">{{ value }}</th>
-        {% endfor %}
+        <th scope="col">Timestamp</th>
+        <th scope="col">Value</th>
+        <th scope="col">Unit</th>
+        <th scope="col">Type</th>
+        <th scope="col">Hash and Salt</th>
+        <th scope="col">Processed?</th>
     </tr>
     </thead>
     <tbody>
@@ -35,16 +38,25 @@ Records found:  {{ total_readings }}, <i>Latest values are on top.</i>
         <td>{{ reading.Unit }}</td>
         <td>{{ reading.Type }}</td>
         <td>
-            <small>
-                <span style="font-family: Courier, monospace">Hash: {{ reading.Unique_Hash[0:64] }}</span>
+            <small style="font-family: Courier, monospace">
+                <span>Hash: <b>{{ reading.Unique_Hash[0:64] }}</b></span>
                 <br>
-                <span style="font-family: Courier, monospace">Salt: {{ reading.Unique_Hash[65:] }}</span>
+                <span>Salt: {{ reading.Unique_Hash[65:] }}</span>
+                {% if reading.Blockchain_Reference is not none %}
+                <br>
+                <span>Blockchain: </span><span style="color:red;">{{ reading.Blockchain_Reference }}</span>
+                {% endif %}
             </small>
         </td>
-        <td style="text-align: center">{{ reading.Processed }}</td>
+        <td style="text-align: center">
+        {% if reading.Processed == "-" %}
+        <b>No</b>
+        {% else %}
+        {{ reading.Processed }}
+	{% endif %}
+        </td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
 {% endblock %}
-
